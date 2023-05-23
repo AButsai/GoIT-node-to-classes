@@ -21,6 +21,6 @@ userRouter.patch(
   controllerWrapper(user.subscription.bind(user)),
 )
 
-userRouter.patch('/avatar', upload.single('avatar'), controllerWrapper(user.avatar.bind(user)))
+userRouter.patch('/avatar', upload.single('images'), controllerWrapper(user.avatar.bind(user)))
 
 export default userRouter

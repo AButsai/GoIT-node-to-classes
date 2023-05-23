@@ -6,8 +6,9 @@ import { comparePassword, createHashPassport } from '../../helpers/bcrypt.js'
 import { generateTokens } from '../../helpers/jwt.js'
 import { SendEmail } from '../../services/emailService/sendEmail.js'
 import { UserService } from '../../services/userService/userService.js'
+import { IAuthentication } from './interfaces.js'
 
-export class Authentication {
+export class Authentication implements IAuthentication {
   private _services: UserService
   private _sendEmail: SendEmail
   constructor(services: UserService, sendEmail: SendEmail) {
@@ -32,7 +33,7 @@ export class Authentication {
       const tokens = await generateTokens(newUser.email, newUser.id)
 
       res.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 100, httpOnly: true })
-      return res.status(200).json({ message: 'success', token: tokens.accessToken })
+      res.status(200).json({ message: 'success', token: tokens.accessToken })
     }
   }
 

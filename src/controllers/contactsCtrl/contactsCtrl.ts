@@ -1,10 +1,11 @@
 import { Request, Response } from 'express'
 import { ErrorNotFound } from '../../errors/ErrorProcessing.js'
 import { ContactService } from '../../services/contactsService/contactsService.js'
-import { BodyUpdate } from '../../services/contactsService/interfaces.js'
+import { IBodyUpdate } from '../../services/contactsService/interfaces.js'
 import { UserService } from '../../services/userService/userService.js'
+import { IContacts } from './interfaces.js'
 
-export class Contacts {
+export class Contacts implements IContacts {
   private _contactsService: ContactService
   private _userService: UserService
   constructor(contactService: ContactService, userService: UserService) {
@@ -20,7 +21,7 @@ export class Contacts {
     return contact
   }
 
-  private async updateContactById(id: string, body: BodyUpdate) {
+  private async updateContactById(id: string, body: IBodyUpdate) {
     return await this._contactsService.updateContact(id, { ...body })
   }
 
@@ -66,7 +67,8 @@ export class Contacts {
 
     if (favorite === 'true') {
       const contacts = [...allContacts].filter((contact) => contact.favorite === !!favorite)
-      return res.status(200).json({ contacts, page, limit })
+      res.status(200).json({ contacts, page, limit })
+      return
     }
     res.status(200).json({ contacts: allContacts, page, limit })
   }

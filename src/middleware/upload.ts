@@ -5,7 +5,7 @@ import { getDirname } from '../utils/utils.js'
 
 const __dirname = getDirname(import.meta.url)
 
-const uploadDir = path.join(__dirname, '../../', 'temp')
+const uploadDir = path.join(__dirname, '../', 'temp')
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {

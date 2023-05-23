@@ -2,9 +2,9 @@ import { Repository } from 'typeorm'
 import { AppDataSource } from '../../data-source.js'
 import { Contact } from '../../entity/contacts.js'
 import { User } from '../../entity/user.js'
-import { Body, BodyUpdate } from './interfaces.js'
+import { IBody, IBodyUpdate, IContactService } from './interfaces.js'
 
-export class ContactService {
+export class ContactService implements IContactService {
   private _service: Repository<Contact>
   private _user: Repository<User>
 
@@ -13,7 +13,7 @@ export class ContactService {
     this._user = AppDataSource.getRepository(User)
   }
 
-  async addContact(user: User, { name, email, phone }: Body) {
+  async addContact(user: User, { name, email, phone }: IBody) {
     const contact = new Contact()
     contact.name = name
     contact.email = email
@@ -23,7 +23,7 @@ export class ContactService {
     return contact
   }
 
-  async updateContact(id: string, body: BodyUpdate) {
+  async updateContact(id: string, body: IBodyUpdate) {
     await this._service.update(id, { ...body })
     return this._service.findOne({ where: { id } })
   }

@@ -1,12 +1,12 @@
 import sgMail from '@sendgrid/mail'
 import dotenv from 'dotenv'
 import { ErrorEmailNotValid, ErrorEmailSend } from '../../errors/ErrorProcessing.js'
-import { Mail } from './interface.js'
+import { ISendEmail, Mail } from './interface.js'
 dotenv.config()
 const { SENDGRID_API_KEY, FROM_EMAIL, BASE_URL } = process.env
 sgMail.setApiKey(`SG.${SENDGRID_API_KEY}`)
 
-export class SendEmail {
+export class SendEmail implements ISendEmail {
   private isValidEmail(email: string) {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       throw new ErrorEmailNotValid()

@@ -1,9 +1,9 @@
 import { FindOneOptions, Repository } from 'typeorm'
 import { AppDataSource } from '../../data-source.js'
 import { User } from '../../entity/user.js'
-import { UpdateUserDto } from './interfaces.js'
+import { IUpdateUserDto, IUserService } from './interfaces.js'
 
-export class UserService {
+export class UserService implements IUserService {
   private _service: Repository<User>
   constructor() {
     this._service = AppDataSource.getRepository(User)
@@ -25,7 +25,7 @@ export class UserService {
     return await this._service.findOne(whereCondition)
   }
 
-  async updateUser(id: string, body: UpdateUserDto) {
+  async updateUser(id: string, body: IUpdateUserDto) {
     const options: FindOneOptions<User> = { where: { id } }
     await this._service.update(id, body)
     return this._service.findOne(options)

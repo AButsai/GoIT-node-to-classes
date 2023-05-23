@@ -8,14 +8,16 @@ import {
 import { generateTokens } from '../../helpers/jwt.js'
 import { SendEmail } from '../../services/emailService/sendEmail.js'
 import { UserService } from '../../services/userService/userService.js'
+import { IEmail } from './interfaces.js'
 
-export class Email {
+export class Email implements IEmail {
   private _userService: UserService
   private _sendEmail: SendEmail
   constructor(userService: UserService, sendEmail: SendEmail) {
     this._userService = userService
     this._sendEmail = sendEmail
   }
+
   async verifyEmail(req: Request, res: Response) {
     const { verificationToken } = req.body
 

@@ -8,8 +8,9 @@ import { generateTokens } from '../../helpers/jwt.js'
 import { photoProcessing } from '../../helpers/photoProcessing.js'
 import { UserService } from '../../services/userService/userService.js'
 import { getDirname } from '../../utils/utils.js'
+import { IUser } from './interfaces.js'
 
-export class User {
+export class User implements IUser {
   private _userService: UserService
   private __dirname: string
   private _avatarDir: string
@@ -30,7 +31,7 @@ export class User {
     const tokens = await generateTokens(user.email, user.id)
 
     res.cookie('refreshToken', tokens.refreshToken, { maxAge: 30 * 24 * 60 * 60 * 100, httpOnly: true })
-    return res.status(200).json({ message: 'success', token: tokens.accessToken, user })
+    res.status(200).json({ message: 'success', token: tokens.accessToken, user })
   }
 
   async subscription(req: Request, res: Response) {
@@ -71,6 +72,7 @@ export class User {
     } catch (error) {
       await fs.unlink(tempUpload)
       if (error instanceof MulterError) {
+        console.log('error', error)
         throw new ErrorMulter(error.message)
       } else {
         throw new ErrorBadRequest()

@@ -4,13 +4,6 @@ import { User } from './user.js'
 
 @Entity()
 export class Contact extends BaseEntity {
-  @BeforeInsert()
-  validateEmail() {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
-      throw new ErrorEmailNotValid()
-    }
-  }
-
   @PrimaryGeneratedColumn('uuid')
   id!: string
 
@@ -19,6 +12,13 @@ export class Contact extends BaseEntity {
 
   @Column({ unique: true, default: '' })
   email!: string
+
+  @BeforeInsert()
+  validateEmail() {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email)) {
+      throw new ErrorEmailNotValid()
+    }
+  }
 
   @Column({ default: '' })
   phone!: string
